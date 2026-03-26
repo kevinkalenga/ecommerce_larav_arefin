@@ -1,4 +1,8 @@
-<h2>Admin Login</h2>
+<a href="{{route('home')}}">Home</a> | <a href="{{route('about')}}">About</a> | 
+<a href="{{route('login')}}">Login</a> | <a href="{{route('registration')}}">Register</a> 
+
+<h2>Login Page</h2>
+
 
 @if($errors->any()) 
 
@@ -16,9 +20,10 @@
     {{ session('error') }}
 @endif
 
-<form action="{{route('admin_login_submit')}}" method="POST">
+<form action="{{route('login_submit')}}" method="POST">
   @csrf 
    <table>
+      
       <tr>
         <td>Email:</td>
         <td>
@@ -31,16 +36,19 @@
             <input type="password" name="password" placeholder="Password">
         </td>
       </tr>
+      
       <tr>
         <td></td>
         <td>
             
-            <button type="submit">Login</button>
             <div>
-                <a href="{{route('admin_forget_password')}}">Forget Password</a>
+                <button type="submit">Login</button>
+                <a href="{{route('forget_password')}}">Forget Password</a>
+            </div>
+              <div>
+                <a href="{{route('registration')}}">New User? Make Registration</a>
             </div>
            
-          
         </td>
       </tr>
    </table>
