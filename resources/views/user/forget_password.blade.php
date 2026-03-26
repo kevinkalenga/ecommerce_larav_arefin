@@ -1,7 +1,6 @@
 @include('user.top')
 
-<h2>Login Page</h2>
-
+<h2>User Forget Password</h2>
 
 @if($errors->any()) 
 
@@ -19,35 +18,23 @@
     {{ session('error') }}
 @endif
 
-<form action="{{route('login_submit')}}" method="POST">
+<form action="{{route('forget_password_submit')}}" method="POST">
   @csrf 
    <table>
-      
       <tr>
         <td>Email:</td>
         <td>
             <input type="email" name="email" placeholder="Email">
         </td>
       </tr>
-      <tr>
-        <td>Password:</td>
-        <td>
-            <input type="password" name="password" placeholder="Password">
-        </td>
-      </tr>
       
       <tr>
         <td></td>
         <td>
-            
+            <button type="submit">Submit</button>
             <div>
-                <button type="submit">Login</button>
-                <a href="{{route('forget_password')}}">Forget Password</a>
+                <a href="{{route('login')}}">Back to Login Page</a>
             </div>
-              <div>
-                <a href="{{route('registration')}}">New User? Make Registration</a>
-            </div>
-           
         </td>
       </tr>
    </table>

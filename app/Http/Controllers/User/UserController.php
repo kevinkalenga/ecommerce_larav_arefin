@@ -11,6 +11,11 @@ use App\Mail\Websitemail;
 
 class UserController extends Controller
 {
+    public function dashboard()
+    {
+        return view('user.dashboard');
+    }
+
     public function registration()
     {
         return view('user.registration');
@@ -84,5 +89,119 @@ class UserController extends Controller
     public function login()
     {
         return view('user.login');
+    }
+
+    public function login_submit(Request $request)
+    {
+        $request->validate([
+            'email' => 'required|email',
+            'password' => 'required',
+        ]);
+
+        $check = $request->all();
+
+        $data = [
+            'email' => $check['email'],
+            'password' => $check['password'],
+            'status' => 1
+        ];
+
+        if (Auth::guard('web')->attempt($data)) {
+            return redirect()->route('dashboard');
+        } else {
+            return redirect()->route('login')->with('error', 'Information is not correct!');
+        }
+    }
+
+    public function logout()
+    {
+        Auth::guard('web')->logout();
+        return redirect()->route('login');
+    }
+
+    /* -------------------- Page mot de passe oublié -------------------- */
+    public function forget_password()
+    {
+        return view('user.forget_password');
+    }
+
+
+    /* -------------------- Soumission du formulaire de mot de passe oublié -------------------- */
+    public function forget_password_submit(Request $request)
+    {
+        // Validation du formulaire
+        $request->validate([
+            'email' => ['required', 'email'],
+        ]);
+
+        // Récupérer le customer
+        $user = User::where('email', $request->email)->first();
+
+        if (!$user) {
+            return back()->with('error', 'Email not found.');
+        }
+
+        // Générer un token sécurisé (32 octets aléatoires convertis en hexadécimal)
+        $token = bin2hex(random_bytes(32));
+
+        // Mettre à jour le token directement
+        $user->update(['token' => $token]);
+
+        // Créer le lien de réinitialisation
+        $link = url('reset-password/' . $token . '/' . $request->email);
+
+        // Message et sujet de l'email
+        $subject = "Password Reset Request";
+        $message = "To reset your password, please click on the link below:<br>";
+        $message .= "<a href='" . $link . "'>Click Here</a>";
+
+
+        \Mail::to($request->email)->send(new Websitemail($subject, $message));
+
+       
+
+        // Retourner avec un message de succès
+        return redirect()->route('login')
+            ->with('success', 'Please check your email and follow the link to reset your password.');
+    }
+
+    /* -------------------- Page de réinitialisation de mot de passe -------------------- */
+    public function reset_password($token, $email)
+    {
+        $user = User::where('email', $email)
+            ->where('token', $token)
+            ->first();
+
+        if (!$user) {
+            return redirect()->route('login')->with('error', 'Invalid token or email.');
+        }
+
+        return view('user.reset_password', compact('token', 'email'));
+    }
+
+
+    /* -------------------- Soumission du formulaire de réinitialisation -------------------- */
+    public function reset_password_submit(Request $request, $token, $email)
+    {
+        $request->validate([
+            'password' => ['required', 'min:6'],
+            'confirm_password' => ['required', 'same:password'],
+        ]);
+
+        $user = User::where('email', $email)
+            ->where('token', $token)
+            ->first();
+
+        if (!$user) {
+            return redirect()->route('login')->with('error', 'Invalid token or email.');
+        }
+
+        // Réinitialiser le mot de passe
+        $user->update([
+            'password' => Hash::make($request->password),
+            'token' => null,
+        ]);
+
+        return redirect()->route('login')->with('success', 'Password reset successfully. You can now log in.');
     }
 }

@@ -17,7 +17,7 @@
     {{ session('error') }}
 @endif
 
-<form action="" method="POST">
+<form action="{{route('admin_reset_password_submit', [$token, $email])}}" method="POST">
   @csrf 
    <table>
       <tr>

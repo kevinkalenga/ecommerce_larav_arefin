@@ -1,6 +1,6 @@
 @include('user.top')
 
-<h2>Registration Page</h2>
+<h2>User Reset Password</h2>
 
 
 @if($errors->any()) 
@@ -19,21 +19,9 @@
     {{ session('error') }}
 @endif
 
-<form action="{{route('registration_submit')}}" method="POST">
+<form action="{{route('reset_password_submit', [$token, $email])}}" method="POST">
   @csrf 
    <table>
-      <tr>
-        <td>Name:</td>
-        <td>
-            <input type="text" name="name" placeholder="Name">
-        </td>
-      </tr>
-      <tr>
-        <td>Email:</td>
-        <td>
-            <input type="email" name="email" placeholder="Email">
-        </td>
-      </tr>
       <tr>
         <td>Password:</td>
         <td>
@@ -41,19 +29,16 @@
         </td>
       </tr>
       <tr>
-        <td>Confirm Password:</td>
+        <td>Retype Password:</td>
         <td>
             <input type="password" name="confirm_password" placeholder="Confirm Password">
         </td>
       </tr>
+      
       <tr>
         <td></td>
         <td>
             <button type="submit">Submit</button>
-            <div>
-              <a href="{{route('login')}}">Existing User? Login Now</a>
-            </div>
-           
         </td>
       </tr>
    </table>
