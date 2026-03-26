@@ -6,4 +6,3 @@
     Welcome {{Auth::guard('web')->user()->name}} to your dashboard.
 </p>
 
-<a href="{{route('logout')}}">Logout</a>

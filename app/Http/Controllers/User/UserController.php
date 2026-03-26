@@ -204,4 +204,65 @@ class UserController extends Controller
 
         return redirect()->route('login')->with('success', 'Password reset successfully. You can now log in.');
     }
+
+    /* -------------------- Page de Profie -------------------- */
+    public function profile()
+    {
+        return view('user.profile');
+    }
+
+
+    public function profile_submit(Request $request)
+    {
+       $request->validate([
+             'name' => 'required',
+             'email' => 'required|email',
+             'password' => 'nullable|min:6|confirmed',
+        ]);
+
+        
+        
+       
+        $user = User::find(Auth::guard('web')->id());
+        // Mettre à jour le mot de passe seulement si rempli
+        if ($request->password) {
+              $user->password = Hash::make($request->password);
+        }
+      
+        //  photo
+
+        if ($request->hasFile('photo')) {
+           $request->validate([
+            'photo' => ['image', 'mimes:jpg,jpeg,png,gif,webp', 'max:2048'],
+           ]);
+
+            // Supprime l'ancienne photo seulement si ce n'est pas une photo par défaut
+            $defaultPhotos = ['user.jpg', 'default.png'];
+            if ($user->photo && !in_array($user->photo, $defaultPhotos) && file_exists(public_path('uploads/' . $user->photo))) {
+                unlink(public_path('uploads/' . $user->photo));
+            }
+
+             // Sauvegarde la nouvelle photo
+             $final_name = 'user_' . time() . '.' . $request->photo->extension();
+             $request->photo->move(public_path('uploads'), $final_name);
+             $user->photo = $final_name;
+        }
+
+
+        // Update
+        $user->name  = $request->name;
+        $user->email = $request->email;
+        $user->phone = $request->phone;
+        $user->country = $request->country;
+        $user->address = $request->address;
+        $user->state = $request->state;
+        $user->city = $request->city;
+        $user->zip = $request->zip;
+        $user->save();
+
+        Auth::guard('web')->setUser($user->fresh());
+
+        return redirect()->back()->with('success', 'Profile updated successfully.');
+
+    }
 }

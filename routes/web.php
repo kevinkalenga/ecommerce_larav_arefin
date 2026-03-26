@@ -38,6 +38,8 @@ Route::prefix('admin')->group(function(){
 Route::prefix('admin')->middleware('admin')->group(function(){ 
 
    Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('admin_dashboard');
+   Route::get('/profile', [AdminController::class, 'profile'])->name('admin_profile');
+    Route::post('/profile', [AdminController::class, 'profile_submit'])->name('admin_profile_submit');
 
 });
 
@@ -47,6 +49,8 @@ Route::prefix('admin')->middleware('admin')->group(function(){
 Route::middleware('auth')->group(function(){ 
 
    Route::get('/dashboard', [UserController::class, 'dashboard'])->name('dashboard');
+   Route::get('/profile', [UserController::class, 'profile'])->name('profile');
+   Route::post('/profile-submit', [UserController::class, 'profile_submit'])->name('profile_submit');
 
 });
 
