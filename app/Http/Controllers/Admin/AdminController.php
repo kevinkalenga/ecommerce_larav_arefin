@@ -13,7 +13,7 @@ class AdminController extends Controller
 {
     public function dashboard()
     {
-        return view('admin.dashboard');
+        return view('admin.dashboard.index');
     }
     public function login()
     {
@@ -132,7 +132,7 @@ class AdminController extends Controller
     /* -------------------- Page de Profie -------------------- */
     public function profile()
     {
-        return view('admin.profile');
+        return view('admin.profile.index');
     }
 
 
