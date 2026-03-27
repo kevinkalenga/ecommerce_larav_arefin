@@ -17,7 +17,7 @@ class AdminController extends Controller
     }
     public function login()
     {
-        return view('admin.login');
+        return view('admin.auth.login');
     }
     
     public function login_submit(Request $request)
@@ -35,7 +35,7 @@ class AdminController extends Controller
         ];
 
         if (Auth::guard('admin')->attempt($data)) {
-            return redirect()->route('admin_dashboard');
+            return redirect()->route('admin_dashboard')->with('success', 'Logged in successfully');
         } else {
             return back()->with('error', 'Invalid credentials.');
         }
@@ -51,7 +51,7 @@ class AdminController extends Controller
     
     public function forget_password()
     {
-        return view('admin.forget_password');
+        return view('admin.auth.forget_password');
     }
     public function forget_password_submit(Request $request)
     {
@@ -100,7 +100,7 @@ class AdminController extends Controller
             return redirect()->route('admin_login')->with('error', 'Invalid token or email.');
         }
 
-        return view('admin.reset_password', compact('token', 'email'));
+        return view('admin.auth.reset_password', compact('token', 'email'));
     }
 
 

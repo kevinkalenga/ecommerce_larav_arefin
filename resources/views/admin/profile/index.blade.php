@@ -1,77 +1,76 @@
 
-@include('admin.top')
-<h2>Admin Profile Page</h2>
+
+@extends('admin.layouts.master')
+
+@section('main_content')
+   <div class="navbar-bg"></div>
+         @include('admin.layouts.nav')
 
 
-@if($errors->any()) 
+         @include('admin.layouts.sidebar')
+        <div class="main-content">
+            <section class="section">
+                <div class="section-header">
+                    <h1>Edit Profile</h1>
+                </div>
+                <div class="section-body">
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="card">
+                                <div class="card-body">
+                                    <form action="{{route('admin_profile_submit')}}" method="post"  enctype="multipart/form-data">
+                                      @csrf
+                                        <div class="row">
+                                            <div class="col-md-3">
+                                                
+                                                  @php 
+                                                    if(Auth::guard('admin')->user()->photo != ''){
+                                                        $admin_photo = Auth::guard('admin')->user()->photo;
+                                                    } else {
+                                                        $admin_photo = 'default.png';
+                                                    }
+                                                  @endphp
+                                                
+                                                <img src="{{asset('uploads/'.$admin_photo)}}?v={{ time() }}" alt="" class="profile-photo w_100_p">
+                                                <input type="file" class="mt_10" name="photo">
+                                            </div>
+                                            <div class="col-md-9">
+                                                <div class="mb-4">
+                                                    <label class="form-label">Name *</label>
+                                                    <input type="text" class="form-control" name="name" value="{{ Auth::guard('admin')->user()->name }}">
+                                                </div>
+                                                <div class="mb-4">
+                                                    <label class="form-label">Email *</label>
+                                                    <input type="text" class="form-control" name="email" value="{{ Auth::guard('admin')->user()->email }}">
+                                                </div>
+                                                <div class="mb-4">
+                                                    <label class="form-label">Password</label>
+                                                    <input type="password" class="form-control" name="password">
+                                                </div>
+                                                <div class="mb-4">
+                                                    <label class="form-label">Confirm Password</label>
+                                                    <input type="password" class="form-control" name="password_confirmation">
+                                                </div>
+                                                <div class="mb-4">
+                                                    <label class="form-label"></label>
+                                                    <button type="submit" class="btn btn-primary">Update</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+      </div>
 
-   @foreach($errors->all() as $error) 
-      {{ $error }}
-   @endforeach
+@endsection
 
-@endif
 
-@if(session('success')) 
-    {{ session('success') }}
-@endif
 
-@if(session('error')) 
-    {{ session('error') }}
-@endif
 
-<form action="{{route('admin_profile_submit')}}" method="POST" enctype="multipart/form-data">
-  @csrf 
-   <table>
-      <tr>
-        <td>Existing Photo:</td>
-        <td>
-            @php 
-              if(Auth::guard('admin')->user()->photo != ''){
-                  $admin_photo = Auth::guard('admin')->user()->photo;
-              } else {
-                  $admin_photo = 'default.png';
-              }
-            @endphp
-            <img src="{{asset('uploads/'.$admin_photo)}}?v={{ time() }}" alt="" style="width:100px;height:auto;">
-        </td>
-      </tr>
-      <tr>
-        <td>Change Photo:</td>
-        <td>
-            <input type="file" name="photo">
-        </td>
-      </tr>
-      <tr>
-        <td>Name:</td>
-        <td>
-            <input type="text" name="name" value="{{ Auth::guard('admin')->user()->name }}">
-        </td>
-      </tr>
-      <tr>
-        <td>Email:</td>
-        <td>
-            <input type="email" name="email" value="{{ Auth::guard('admin')->user()->email }}">
-        </td>
-      </tr>
-      
-      <tr>
-        <td>Password:</td>
-        <td>
-            <input type="password" name="password" placeholder="Password">
-        </td>
-      </tr>
-      <tr>
-        <td>Confirm Password:</td>
-        <td>
-            <input type="password" name="password_confirmation" placeholder="Confirm Password">
-        </td>
-      </tr>
-      <tr>
-        <td></td>
-        <td>
-            <button type="submit">Update</button>
-           
-        </td>
-      </tr>
-   </table>
-</form>
+
+
+
