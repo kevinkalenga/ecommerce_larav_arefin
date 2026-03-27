@@ -1,7 +1,5 @@
 @extends('front.layouts.master')
 
-
-
 @section('page_main_content') 
 
 
