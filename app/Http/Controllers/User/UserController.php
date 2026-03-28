@@ -18,7 +18,10 @@ class UserController extends Controller
 
     public function registration()
     {
-        return view('user.registration');
+        if(Auth::guard('web')->check()) {
+            return redirect()->route('user_dashboard');
+        }
+        return view('user.auth.registration');
     }
     
     
@@ -88,7 +91,10 @@ class UserController extends Controller
 
     public function login()
     {
-        return view('user.login');
+        if(Auth::guard('web')->check()) {
+            return redirect()->route('user_dashboard');
+        }
+        return view('user.auth.login');
     }
 
     public function login_submit(Request $request)
@@ -107,22 +113,22 @@ class UserController extends Controller
         ];
 
         if (Auth::guard('web')->attempt($data)) {
-            return redirect()->route('dashboard');
+            return redirect()->route('user_dashboard')->with('success', 'Logged in successfully!');
         } else {
-            return redirect()->route('login')->with('error', 'Information is not correct!');
+            return redirect()->route('user_login')->with('error', 'Information is not correct!');
         }
     }
 
     public function logout()
     {
         Auth::guard('web')->logout();
-        return redirect()->route('login');
+        return redirect()->route('user_login')->with('success', 'Logged out successfully!');
     }
 
     /* -------------------- Page mot de passe oublié -------------------- */
     public function forget_password()
     {
-        return view('user.forget_password');
+        return view('user.auth.forget_password');
     }
 
 
@@ -148,7 +154,7 @@ class UserController extends Controller
         $user->update(['token' => $token]);
 
         // Créer le lien de réinitialisation
-        $link = url('reset-password/' . $token . '/' . $request->email);
+        $link = url('user/reset-password/' . $token . '/' . $request->email);
 
         // Message et sujet de l'email
         $subject = "Password Reset Request";
@@ -161,7 +167,7 @@ class UserController extends Controller
        
 
         // Retourner avec un message de succès
-        return redirect()->route('login')
+        return redirect()->route('user_login')
             ->with('success', 'Please check your email and follow the link to reset your password.');
     }
 
@@ -173,10 +179,10 @@ class UserController extends Controller
             ->first();
 
         if (!$user) {
-            return redirect()->route('login')->with('error', 'Invalid token or email.');
+            return redirect()->route('user_login')->with('error', 'Invalid token or email.');
         }
 
-        return view('user.reset_password', compact('token', 'email'));
+        return view('user.auth.reset_password', compact('token', 'email'));
     }
 
 
@@ -193,7 +199,7 @@ class UserController extends Controller
             ->first();
 
         if (!$user) {
-            return redirect()->route('login')->with('error', 'Invalid token or email.');
+            return redirect()->route('user_login')->with('error', 'Invalid token or email.');
         }
 
         // Réinitialiser le mot de passe
@@ -202,7 +208,7 @@ class UserController extends Controller
             'token' => null,
         ]);
 
-        return redirect()->route('login')->with('success', 'Password reset successfully. You can now log in.');
+        return redirect()->route('user_login')->with('success', 'Password reset successfully. You can now log in.');
     }
 
     /* -------------------- Page de Profie -------------------- */
@@ -264,5 +270,14 @@ class UserController extends Controller
 
         return redirect()->back()->with('success', 'Profile updated successfully.');
 
+    }
+
+    public function orders()
+    {
+        return view('user.orders');
+    }
+    public function wishlist()
+    {
+       return view('user.wishlist');
     }
 }

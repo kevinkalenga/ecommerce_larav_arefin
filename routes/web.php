@@ -56,23 +56,27 @@ Route::prefix('admin')->middleware('admin')->group(function(){
 
 /************************************* User ********************************/
 
-Route::middleware('auth')->group(function(){ 
+Route::middleware('auth')->prefix('user')->group(function(){ 
 
-   Route::get('/dashboard', [UserController::class, 'dashboard'])->name('dashboard');
-   Route::get('/profile', [UserController::class, 'profile'])->name('profile');
-   Route::post('/profile-submit', [UserController::class, 'profile_submit'])->name('profile_submit');
+   Route::get('/dashboard', [UserController::class, 'dashboard'])->name('user_dashboard');
+   Route::get('/profile', [UserController::class, 'profile'])->name('user_profile');
+   Route::post('/profile-submit', [UserController::class, 'profile_submit'])->name('user_profile_submit');
+   Route::get('/orders', [UserController::class, 'orders'])->name('user_orders');
+   Route::get('/wishlist', [UserController::class, 'wishlist'])->name('user_wishlist');
 
 });
 
-Route::get('/registration', [UserController::class, 'registration'])->name('registration');
-Route::post('/registration-submit', [UserController::class, 'registration_submit'])->name('registration_submit');
-Route::get('/registration_verify/{email}/{token}', [UserController::class, 'registration_verify'])->name('registration_verify');
-Route::get('/login', [UserController::class, 'login'])->name('login');
-Route::post('/login-submit', [UserController::class, 'login_submit'])->name('login_submit');
-Route::get('/logout', [UserController::class, 'logout'])->name('logout');
-Route::get('/forget-password', [UserController::class, 'forget_password'])->name('forget_password');
-Route::post('/forget-password', [UserController::class, 'forget_password_submit'])->name('forget_password_submit');
-Route::get('/reset-password/{token}/{email}', [UserController::class, 'reset_password'])->name('reset_password');
-Route::post('/reset-password/{token}/{email}', [UserController::class, 'reset_password_submit'])->name('reset_password_submit');
+Route::prefix('user')->group(function(){
+  Route::get('/registration', [UserController::class, 'registration'])->name('user_registration');
+  Route::post('/registration-submit', [UserController::class, 'registration_submit'])->name('user_registration_submit');
+  Route::get('/registration_verify/{email}/{token}', [UserController::class, 'registration_verify'])->name('user_registration_verify');
+  Route::get('/login', [UserController::class, 'login'])->name('user_login');
+  Route::post('/login-submit', [UserController::class, 'login_submit'])->name('user_login_submit');
+  Route::get('/logout', [UserController::class, 'logout'])->name('user_logout');
+  Route::get('/forget-password', [UserController::class, 'forget_password'])->name('user_forget_password');
+  Route::post('/forget-password', [UserController::class, 'forget_password_submit'])->name('user_forget_password_submit');
+  Route::get('/reset-password/{token}/{email}', [UserController::class, 'reset_password'])->name('user_reset_password');
+  Route::post('/reset-password/{token}/{email}', [UserController::class, 'reset_password_submit'])->name('user_reset_password_submit');
+});
 
 

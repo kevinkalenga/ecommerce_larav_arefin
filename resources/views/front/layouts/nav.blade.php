@@ -43,7 +43,7 @@
                             <i class="bi bi-search"></i>
                         </button>
                     </div>
-                    <a href="customer-wishlist.html" class="btn btn-outline-success position-relative me-2">
+                    <a href="{{route('user_wishlist')}}" class="btn btn-outline-success position-relative me-2">
                         <i class="bi bi-heart"></i>
                     </a>
                     <a href="{{route('cart')}}" class="btn btn-success position-relative">
