@@ -37,7 +37,7 @@ class UserController extends Controller
         
          $token = hash('sha256', time());
          $password = Hash::make($request->password);
-          $link = url('registration_verify/'.$request->email.'/'.$token);
+          $link = url('user/registration_verify/'.$request->email.'/'.$token);
           
           $obj = new User();
           $obj->name = $request->name;
@@ -78,13 +78,13 @@ class UserController extends Controller
         
             
             
-            return redirect()->route('login')
+            return redirect()->route('user_login')
             ->with('success', 'Your account is verified successfully!');
         
         }
 
 
-        return redirect()->route('login')->with('error', 'Invalid verification link.');
+        return redirect()->route('user_login')->with('error', 'Invalid verification link.');
     
     
     }
@@ -222,7 +222,7 @@ class UserController extends Controller
     {
        $request->validate([
              'name' => 'required',
-             'email' => 'required|email',
+             'email' => 'required|email|unique:users,email,'.Auth::id(),
              'password' => 'nullable|min:6|confirmed',
         ]);
 

@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\Admin\AdminController;
+use App\Http\Controllers\Admin\AdminUserController;
 
 
 use App\Http\Controllers\User\UserController;
@@ -49,7 +50,13 @@ Route::prefix('admin')->middleware('admin')->group(function(){
 
    Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('admin_dashboard');
    Route::get('/profile', [AdminController::class, 'profile'])->name('admin_profile');
-    Route::post('/profile', [AdminController::class, 'profile_submit'])->name('admin_profile_submit');
+   Route::post('/profile', [AdminController::class, 'profile_submit'])->name('admin_profile_submit');
+   Route::get('/user/index', [AdminUserController::class, 'index'])->name('admin_user_index');
+   Route::get('/user/create', [AdminUserController::class, 'create'])->name('admin_user_create');
+   Route::post('/user/store', [AdminUserController::class, 'store'])->name('admin_user_store');
+   Route::get('/user/edit/{id}', [AdminUserController::class, 'edit'])->name('admin_user_edit');
+   Route::post('/user/update/{id}', [AdminUserController::class, 'update'])->name('admin_user_update');
+   Route::get('/user/delete/{id}', [AdminUserController::class, 'delete'])->name('admin_user_delete');
 
 });
 

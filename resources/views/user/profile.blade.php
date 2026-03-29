@@ -98,7 +98,7 @@
                                 </div>
                                 <div class="col-md-6">
                                     <label class="form-label">Confirm Password <span class="text-danger"></span></label>
-                                    <input type="password" class="form-control" name="confirm_password" >
+                                    <input type="password" class="form-control" name="password_confirmation" >
                                 </div>
                                 <div class="col-12">
                                     <button type="submit" class="btn btn-success">

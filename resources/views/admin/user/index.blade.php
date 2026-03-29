@@ -1,0 +1,91 @@
+
+
+@extends('admin.layouts.master')
+
+@section('main_content')
+   <div class="navbar-bg"></div>
+         @include('admin.layouts.nav')
+
+
+         @include('admin.layouts.sidebar')
+        <div class="main-content">
+            <section class="section">
+                <div class="section-header d-flex justify-content-between align-items-center">
+                    <h1>Users</h1>
+                    <div class="ml-auto">
+                        <a href="{{route('admin_user_create')}}" class="btn btn-primary"><i class="fas fa-plus"></i> Create User</a>
+                    </div>
+                 
+                </div>
+                <div class="section-body">
+                    <div class="row">
+                        <div class="co-lg-12">
+                            <div class="card">
+                                <div class="card-body">
+                                   <div class="table-respnsive">
+                                      <table class="table table-bordered table-md" id="example1">
+                                        <thead>
+                                           <tr>
+                                              <th>SL</th>
+                                              <th>Photo</th>
+                                              <th>Name</th>
+                                              <th>Email</th>
+                                              <th>Phone</th>
+                                              <th>Status</th>
+                                              <th>Action</th>
+                                           </tr>
+                                        </thead>
+                                        <tbody>
+                                          @foreach($users as $user)
+                                           <tr>
+                                              <td>{{$loop->iteration}}</td>
+                                              <td>
+                                                @php 
+                                                  if($user->photo != ''){
+                                                      $user_photo = $user->photo;
+                                                  } else {
+                                                      $user_photo = 'default.png';
+                                                  }
+                                                @endphp
+                                                <img src="{{asset('uploads/'.$user_photo)}}?v={{ time() }}" alt="" style="width:100px;height:auto;">
+                                              </td>
+                                              
+                                              <td>{{$user->name}}</td>
+                                              <td>{{$user->email}}</td>
+                                              <td>{{$user->phone}}</td>
+                                              <td>
+                                                @if($user->status == 1)
+                                                  <span class="badge bg-success">Active</span>
+                                                @elseif($user->status == 0)
+                                                   <span class="badge bg-danger">Pending</span>
+                                                @elseif($user->status == 2)  
+                                                   <span class="badge beg-warning">Suspended</span>
+                                                @endif
+                                              </td>
+                                               <td>
+                                                 <a href="#" class="btn btn-warning btn-sm"><i class="fas fa-edit"></i></a>
+                                                 <a href="#" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure?')"><i class="fas fa-trash"></i></a>
+                                               </td>
+                                           </tr>
+
+
+                                          @endforeach
+                                         </tbody>
+                                      </table>
+                                   </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+      </div>
+
+@endsection
+
+
+
+
+
+
+

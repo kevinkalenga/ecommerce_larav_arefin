@@ -22,6 +22,12 @@ table.t1 tr td {
     border-top: 1px solid #e3e3e3;
 }
 
+label {
+    font-weight: 600;
+    margin-bottom: 20px;
+
+}
+
 .card.card-statistic-1 .card-header h4, .card.card-statistic-2 .card-header h4 {
     letter-spacing: normal;
 }
@@ -188,8 +194,9 @@ thead tr th {
 .note-editor.note-frame {
     border-color: #d7d7d7!important;
 }
-.form-control {
+.form-control, .form-select {
     font-size: var(--font-size-common)!important;
+    height: 42px;
 }
 .card .card-header {
     border-bottom-color: #ebebeb;
