@@ -57,14 +57,14 @@
                                                 @if($user->status == 1)
                                                   <span class="badge bg-success">Active</span>
                                                 @elseif($user->status == 0)
-                                                   <span class="badge bg-danger">Pending</span>
+                                                   <span class="badge bg-warning">Pending</span>
                                                 @elseif($user->status == 2)  
-                                                   <span class="badge beg-warning">Suspended</span>
+                                                   <span class="badge beg-danger">Suspended</span>
                                                 @endif
                                               </td>
                                                <td>
-                                                 <a href="#" class="btn btn-warning btn-sm"><i class="fas fa-edit"></i></a>
-                                                 <a href="#" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure?')"><i class="fas fa-trash"></i></a>
+                                                 <a href="{{route('admin_user_edit', $user->id)}}" class="btn btn-warning btn-sm"><i class="fas fa-edit"></i></a>
+                                                 <a href="{{route('admin_user_delete', $user->id)}}" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure?')"><i class="fas fa-trash"></i></a>
                                                </td>
                                            </tr>
 
