@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\AdminUserController;
+use App\Http\Controllers\Admin\AdminProductCategoryController;
 
 
 use App\Http\Controllers\User\UserController;
@@ -51,12 +52,23 @@ Route::prefix('admin')->middleware('admin')->group(function(){
    Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('admin_dashboard');
    Route::get('/profile', [AdminController::class, 'profile'])->name('admin_profile');
    Route::post('/profile', [AdminController::class, 'profile_submit'])->name('admin_profile_submit');
+  
+   //  Admin manage user 
    Route::get('/user/index', [AdminUserController::class, 'index'])->name('admin_user_index');
    Route::get('/user/create', [AdminUserController::class, 'create'])->name('admin_user_create');
    Route::post('/user/store', [AdminUserController::class, 'store'])->name('admin_user_store');
    Route::get('/user/edit/{id}', [AdminUserController::class, 'edit'])->name('admin_user_edit');
    Route::post('/user/update/{id}', [AdminUserController::class, 'update'])->name('admin_user_update');
    Route::get('/user/delete/{id}', [AdminUserController::class, 'delete'])->name('admin_user_delete');
+   
+   
+   // Admin manage product categories
+   Route::get('/product-category/index', [AdminProductCategoryController::class, 'index'])->name('admin_product_category_index');
+   Route::get('/product-category/create', [AdminProductCategoryController::class, 'create'])->name('admin_product_category_create');
+   Route::post('/product-category/store', [AdminProductCategoryController::class, 'store'])->name('admin_product_category_store');
+   Route::get('/product-category/edit/{id}', [AdminProductCategoryController::class, 'edit'])->name('admin_product_category_edit');
+   Route::post('/product-category/update/{id}', [AdminProductCategoryController::class, 'update'])->name('admin_product_category_update');
+   Route::get('/product-category/delete/{id}', [AdminProductCategoryController::class, 'delete'])->name('admin_product_category_delete');
 
 });
 
