@@ -23,6 +23,7 @@ class AdminProductCategoryController extends Controller
     {
      $request->validate([
         'name' => 'required|unique:product_categories,name',
+        'show_on_home' => 'required',
       ]);
 
       
@@ -30,6 +31,7 @@ class AdminProductCategoryController extends Controller
         // Enregistrement
         $product_category = new ProductCategory();
         $product_category->name = $request->name;
+        $product_category->show_on_home = $request->show_on_home;
  
         $product_category->save();
 
@@ -55,14 +57,14 @@ class AdminProductCategoryController extends Controller
         
          $request->validate([
             'name' => 'required|unique:product_categories,name',
-           
+            'show_on_home' => 'required',
             
         ]);
         
         
           // Update infos
         $product_category->name = $request->name;
-        
+        $product_category->show_on_home = $request->show_on_home;
         $product_category->save();
 
         return redirect()->route('admin_product_category_index')->with('success', 'Product Category is Updated Successfully');

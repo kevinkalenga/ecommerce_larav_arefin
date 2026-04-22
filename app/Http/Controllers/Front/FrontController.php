@@ -4,12 +4,14 @@ namespace App\Http\Controllers\Front;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Models\ProductCategory;
 
 class FrontController extends Controller
 {
     public function index()
     {
-        return view('front.home');
+        $product_categories_home = ProductCategory::where('show_on_home', 1)->orderBy('name', 'asc')->get();
+        return view('front.home', compact('product_categories_home'));
     }
     
     public function about()

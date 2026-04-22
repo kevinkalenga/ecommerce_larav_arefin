@@ -28,7 +28,7 @@
                                            <tr>
                                               <th>SL</th>
                                               <th>Name</th>
-                                             
+                                               <th>Show on home?</th>
                                               <th>Action</th>
                                            </tr>
                                         </thead>
@@ -39,7 +39,13 @@
                                            
                                               
                                               <td>{{$product_category->name}}</td>
-                                             
+                                              <td>
+                                                @if($product_category->show_on_home == 1) 
+                                                  <span class="badge bg-success">Yes</span>
+                                                @else  
+                                                   <span class="badge bg-danger">No</span>
+                                                @endif
+                                              </td>
                                               
                                                <td>
                                                  <a href="{{route('admin_product_category_edit', $product_category->id)}}" class="btn btn-warning btn-sm"><i class="fas fa-edit"></i></a>

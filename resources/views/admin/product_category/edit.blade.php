@@ -32,7 +32,14 @@
                                                     <input type="text" class="form-control" name="name" value="{{$product_category->name}}">
                                                 </div>
                                              
-                                                
+                                                <div class="col-lg-6 mb-3">
+                                                    <label for="">Show on home ?*</label>
+                                                    <select name="show_on_home" class="form-select">
+                                                        <option value="0" {{$product_category->show_on_home == 0 ? 'selected':''}}>No</option>
+                                                        <option value="1" {{$product_category->show_on_home == 1 ? 'selected':''}}>Yes</option>
+                                                       
+                                                    </select>
+                                                </div>
                                                 
                                                 <div class="mb-3">
                                                     <label class="form-label"></label>
