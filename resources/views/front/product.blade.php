@@ -74,11 +74,7 @@
                         <a href="products.html?category=fruits" class="text-success text-decoration-none">Fruits & Vegetables</a>
                     </div>
 
-                    <!-- Brand -->
-                    <div class="mb-3">
-                        <span class="fw-bold">Brand:</span> 
-                        <span class="text-muted">Fresh Harvest</span>
-                    </div>
+                  
 
                     <!-- Weight/Size Options -->
                     <div class="mb-4">
@@ -326,4 +322,72 @@
         </div>
     </div>
 </section>
+@endsection
+@section('scripts')
+
+<script>
+$(document).ready(function() {
+    console.log('Script loaded');
+    
+    // Store base unit prices
+    var baseUnitPrice = 4.99;
+    var baseOriginalPrice = 6.99;
+    
+    // Function to update total price
+    function updateTotalPrice() {
+        var quantity = parseInt($('#quantityInput').val());
+        var totalPrice = baseUnitPrice * quantity;
+        var originalTotal = baseOriginalPrice * quantity;
+        
+        $('#currentPrice').text('$' + totalPrice.toFixed(2));
+        $('#originalPrice').text('$' + originalTotal.toFixed(2));
+    }
+    
+    // Weight option change handler
+    $('input[name="weight"]').on('change', function() {
+        console.log('Weight changed!');
+        baseUnitPrice = parseFloat($(this).data('price'));
+        baseOriginalPrice = parseFloat($(this).data('original'));
+        
+        console.log('New Price:', baseUnitPrice);
+        console.log('Original Price:', baseOriginalPrice);
+        
+        // Reset quantity to 1 when weight changes
+        $('#quantityInput').val(1);
+        
+        // Update prices
+        $('#currentPrice').text('$' + baseUnitPrice.toFixed(2));
+        $('#originalPrice').text('$' + baseOriginalPrice.toFixed(2));
+    });
+    
+    // Quantity increment/decrement handlers
+    $('#incrementBtn').on('click', function() {
+        var input = $('#quantityInput');
+        var currentVal = parseInt(input.val());
+        input.val(currentVal + 1);
+        updateTotalPrice();
+    });
+    
+    $('#decrementBtn').on('click', function() {
+        var input = $('#quantityInput');
+        var currentVal = parseInt(input.val());
+        if (currentVal > 1) {
+            input.val(currentVal - 1);
+            updateTotalPrice();
+        }
+    });
+    
+    // Handle manual input change
+    $('#quantityInput').on('change', function() {
+        var currentVal = parseInt($(this).val());
+        if (currentVal < 1 || isNaN(currentVal)) {
+            $(this).val(1);
+        }
+        updateTotalPrice();
+    });
+});
+</script>
+
+
+
 @endsection

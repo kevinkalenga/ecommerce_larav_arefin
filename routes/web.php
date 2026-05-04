@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\AdminUserController;
 use App\Http\Controllers\Admin\AdminProductCategoryController;
+use App\Http\Controllers\Admin\AdminProductController;
 
 
 use App\Http\Controllers\User\UserController;
@@ -69,6 +70,14 @@ Route::prefix('admin')->middleware('admin')->group(function(){
    Route::get('/product-category/edit/{id}', [AdminProductCategoryController::class, 'edit'])->name('admin_product_category_edit');
    Route::post('/product-category/update/{id}', [AdminProductCategoryController::class, 'update'])->name('admin_product_category_update');
    Route::get('/product-category/delete/{id}', [AdminProductCategoryController::class, 'delete'])->name('admin_product_category_delete');
+   
+   // Admin manage product 
+   Route::get('/product/index', [AdminProductController::class, 'index'])->name('admin_product_index');
+   Route::get('/product/create', [AdminProductController::class, 'create'])->name('admin_product_create');
+   Route::post('/product/store', [AdminProductController::class, 'store'])->name('admin_product_store');
+   Route::get('/product/edit/{id}', [AdminProductController::class, 'edit'])->name('admin_product_edit');
+   Route::post('/product/update/{id}', [AdminProductController::class, 'update'])->name('admin_product_update');
+   Route::get('/product/delete/{id}', [AdminProductController::class, 'delete'])->name('admin_product_delete');
 
 });
 
