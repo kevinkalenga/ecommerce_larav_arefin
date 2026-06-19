@@ -78,6 +78,10 @@ Route::prefix('admin')->middleware('admin')->group(function(){
    Route::get('/product/edit/{id}', [AdminProductController::class, 'edit'])->name('admin_product_edit');
    Route::post('/product/update/{id}', [AdminProductController::class, 'update'])->name('admin_product_update');
    Route::get('/product/delete/{id}', [AdminProductController::class, 'delete'])->name('admin_product_delete');
+   Route::get('/product/variation/{id}', [AdminProductController::class, 'product_variation'])->name('admin_product_variation');
+   Route::post('/product/variation/store/{id}', [AdminProductController::class, 'product_variation_store'])->name('admin_product_variation_store');
+   Route::post('/product/variation/update/{id}', [AdminProductController::class, 'product_variation_update'])->name('admin_product_variation_update');
+   Route::get('/product/variation/delete/{id}', [AdminProductController::class, 'product_variation_delete'])->name('admin_product_variation_delete');
 
 });
 

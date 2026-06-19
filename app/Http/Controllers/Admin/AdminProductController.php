@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Product;
+use App\Models\ProductVariation;
 use App\Models\ProductCategory;
 
 
@@ -123,5 +124,87 @@ class AdminProductController extends Controller
 
        return redirect()->route('admin_product_index')->with('success', 'Product deleted successfully');
     }
+
+    public function product_variation($id)
+    {
+        $product = Product::where('id', $id)->first();
+        $product_variations = ProductVariation::where('product_id', $id)->get();
+        return view('admin.product.variation', compact('product', 'product_variations'));
+    }
+
+
+    public function product_variation_store(Request $request, $id)
+    {
+        $request->validate([
+            'label' => 'required',
+            'sale_price' => 'required|numeric',
+            'regular_price' => 'nullable|numeric',
+            'stock' => 'required|integer',
+            'sort_order' => 'integer|nullable',
+          
+        ]);
+
+        // Enregistrement
+        $product_variation = new ProductVariation();
+
+       
+        // $product_variation->product_id = $request->$id;
+        $product_variation->product_id = $id;
+        $product_variation->label = $request->label;
+        $product_variation->sale_price = $request->sale_price;
+        $product_variation->regular_price = $request->regular_price;
+        $product_variation->stock = $request->stock;
+        $product_variation->sort_order = $request->sort_order;
+       
+        $product_variation->save();
+
+
+      
+        return redirect()->back()->with('success',  'Product variation added Successfully');
+    }
+
+
+    public function product_variation_delete($id)
+    {
+        $product_variation = ProductVariation::orderBy('sort_order', 'asc')->where('id', $id)->first();
+        
+        if(!$product_variation) {
+            return redirect()->back()->with('error', 'Product variation not found');
+        }
+
+        $product_variation->delete();
+
+        return redirect()->back()->with('success',  'Product variation deleted Successfully');
+       
+    }
+    
+    public function product_variation_update(Request $request, $id)
+    {
+        $request->validate([
+            'label' => 'required',
+            'sale_price' => 'required|numeric',
+            'regular_price' => 'nullable|numeric',
+            'stock' => 'required|integer',
+            'sort_order' => 'integer|nullable',
+        ]);
+
+        // Récupérer la variation existante
+        $product_variation = ProductVariation::findOrFail($id);
+
+        // Mettre à jour les données
+        $product_variation->label = $request->label;
+        $product_variation->sale_price = $request->sale_price;
+        $product_variation->regular_price = $request->regular_price;
+        $product_variation->stock = $request->stock;
+        $product_variation->sort_order = $request->sort_order;
+
+        $product_variation->save();
+
+        return redirect()->back()->with(
+            'success',
+            'Product variation updated successfully'
+        );
+    }
+
 
 }

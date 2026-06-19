@@ -47,7 +47,7 @@
                                               <td>{{$product->slug}}</td>
                                               <td>{{$product->product_category->name}}</td>
                                               <td>
-                                                <a href="" class="btn btn-info">Product Variation</a>
+                                                <a href="{{route('admin_product_variation', $product->id)}}" class="btn btn-info btn-sm">Product Variation</a>
                                               </td>
                                                <td>
                                                  <a href="{{route('admin_product_edit', $product->id)}}" class="btn btn-warning btn-sm"><i class="fas fa-edit"></i></a>
