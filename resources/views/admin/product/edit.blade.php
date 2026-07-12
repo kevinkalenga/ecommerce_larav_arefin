@@ -38,22 +38,14 @@
                                                     </div>
                                                 </div>
                                            
-                                                <div class="col-lg-4 mb-3">
-                                                    <label for="">Product Category *</label>
-                                                    <select name="product_category_id" class="form-select">
-                                                      @foreach($product_categories as $item)
-                                                        <option value="{{$item->id}}" {{$product->product_category_id == 
-                                                            $item->id ? 'selected' : ''}}>{{$item->name}}</option>
-                                                      @endforeach 
-                                                    </select>
-                                                </div>
+                                             
                                                 
                                                 
-                                                <div class="col-lg-4 mb-3">
+                                                <div class="col-lg-6 mb-3">
                                                     <label for="">Name *</label>
                                                     <input type="text" class="form-control" name="name" value="{{$product->name}}" >
                                                 </div>
-                                                <div class="col-lg-4 mb-3">
+                                                <div class="col-lg-6 mb-3">
                                                     <label for="">Slug *</label>
                                                     <input type="text" class="form-control" name="slug"  value="{{$product->slug}}" >
                                                 </div>
@@ -70,7 +62,22 @@
                                                     </textarea>
                                                 </div>
                                                 
-                                             
+                                                <div class="col-lg-6 mb-3">
+                                                    <label for="">Product Category *</label>
+                                                    <select name="product_category_id" class="form-select">
+                                                      @foreach($product_categories as $item)
+                                                        <option value="{{$item->id}}" {{$product->product_category_id == 
+                                                            $item->id ? 'selected' : ''}}>{{$item->name}}</option>
+                                                      @endforeach 
+                                                    </select>
+                                                </div>
+                                                <div class="col-lg-6 mb-3">
+                                                    <label for="">Show on Home? *</label>
+                                                    <select name="show_on_home" class="form-select">
+                                                      <option value="1" {{$product->show_on_home == 1 ? 'selected':''}}></option>
+                                                      <option value="0" {{$product->show_on_home == 0 ? 'selected':''}}></option>
+                                                    </select>
+                                                </div>
                                                 
                                                 <div class="mb-3">
                                                     <label class="form-label"></label>

@@ -32,21 +32,13 @@
                                                     </div>
                                                 </div>
                                            
-                                                <div class="col-lg-4 mb-3">
-                                                    <label for="">Product Category *</label>
-                                                    <select name="product_category_id" class="form-select">
-                                                      @foreach($product_categories as $item)
-                                                        <option value="{{$item->id}}">{{$item->name}}</option>
-                                                      @endforeach 
-                                                    </select>
-                                                </div>
                                                 
                                                 
-                                                <div class="col-lg-4 mb-3">
+                                                <div class="col-lg-6 mb-3">
                                                     <label for="">Name *</label>
                                                     <input type="text" class="form-control" name="name" >
                                                 </div>
-                                                <div class="col-lg-4 mb-3">
+                                                <div class="col-lg-6 mb-3">
                                                     <label for="">Slug *</label>
                                                     <input type="text" class="form-control" name="slug" >
                                                 </div>
@@ -59,7 +51,27 @@
                                                     <textarea name="description" class="form-control editor" rows="6"></textarea>
                                                 </div>
                                                 
-                                             
+                                                
+                                                <div class="col-lg-6 mb-3">
+                                                    <label for="">Product Category *</label>
+                                                    <select name="product_category_id" class="form-select">
+                                                      @foreach($product_categories as $item)
+                                                        <option value="{{$item->id}}">{{$item->name}}</option>
+                                                      @endforeach 
+                                                    </select>
+                                                </div>
+                                                
+                                                
+                                                
+                                                
+                                                
+                                                <div class="col-lg-6 mb-3">
+                                                    <label for="">Show on Home? *</label>
+                                                    <select name="show_on_home" class="form-select">
+                                                        <option value="1">Yes</option>
+                                                        <option value="0">No</option>
+                                                    </select>
+                                                </div>
                                                 
                                                 <div class="mb-3">
                                                     <label class="form-label"></label>

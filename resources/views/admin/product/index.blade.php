@@ -31,6 +31,7 @@
                                               <th>Name</th>
                                               <th>Slug</th>
                                               <th>Category</th>
+                                              <th>Show on home</th>
                                               <th>Product Variation</th>
                                               <th>Action</th>
                                            </tr>
@@ -46,6 +47,13 @@
                                               <td>{{$product->name}}</td>
                                               <td>{{$product->slug}}</td>
                                               <td>{{$product->product_category->name}}</td>
+                                              <td>
+                                                 @if($product->show_on_home) 
+                                                   <span class="badge bg-success">Yes</span>
+                                                 @else 
+                                                    <span class="badge bg-danger">No</span>
+                                                 @endif
+                                              </td>
                                               <td>
                                                 <a href="{{route('admin_product_variation', $product->id)}}" class="btn btn-info btn-sm">Product Variation</a>
                                               </td>

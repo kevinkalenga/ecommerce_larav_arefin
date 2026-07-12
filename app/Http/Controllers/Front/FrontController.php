@@ -5,13 +5,15 @@ namespace App\Http\Controllers\Front;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\ProductCategory;
+use App\Models\Product;
 
 class FrontController extends Controller
 {
     public function index()
     {
         $product_categories_home = ProductCategory::where('show_on_home', 1)->orderBy('name', 'asc')->get();
-        return view('front.home', compact('product_categories_home'));
+        $products_home = Product::where('show_on_home', 1)->get();
+        return view('front.home', compact('product_categories_home', 'products_home'));
     }
     
     public function about()
@@ -44,7 +46,8 @@ class FrontController extends Controller
     }
     public function products()
     {
-        return view('front.products');
+        $products = Product::get();
+        return view('front.products', compact('products'));
     }
     public function product($slug)
     {

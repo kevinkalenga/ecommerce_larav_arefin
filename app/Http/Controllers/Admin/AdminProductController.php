@@ -45,12 +45,13 @@ class AdminProductController extends Controller
 
         } 
 
-       
+        $product->product_category_id = $request->product_category_id;
         $product->name = $request->name;
         $product->slug = $request->slug;
         $product->short_description = $request->short_description;
         $product->description = $request->description;
-        $product->product_category_id = $request->product_category_id;
+        $product->show_on_home = $request->show_on_home;
+      
        
         $product->save();
 
@@ -100,11 +101,13 @@ class AdminProductController extends Controller
        
         
           // Update infos
+        $product->product_category_id = $request->product_category_id;
         $product->name = $request->name;
         $product->slug = $request->slug;
         $product->short_description = $request->short_description;
         $product->description = $request->description;
-        $product->product_category_id = $request->product_category_id;
+        $product->show_on_home = $request->show_on_home;
+        
         $product->save();
 
         return redirect()->route('admin_product_index')->with('success', 'Product is Updated Successfully');

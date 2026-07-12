@@ -15,6 +15,6 @@ class Product extends Model
     public function product_variations()
     {
         // each product can have multiple variation
-        return $this->hasMany(ProductVariation::class);
+        return $this->hasMany(ProductVariation::class)->orderBy('sort_order', 'asc');
     }
 }
