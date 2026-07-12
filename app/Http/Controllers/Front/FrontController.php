@@ -51,7 +51,10 @@ class FrontController extends Controller
     }
     public function product($slug)
     {
-        return view('front.product', compact('slug'));
+        $product = Product::where('slug', $slug)->first();
+        $related_products = Product::where('product_category_id', $product->product_category_id)
+            ->where('id', '!=', $product->id)->orderBy('id', 'asc')->take(4)->get();
+        return view('front.product', compact('product', 'related_products'));
     }
     public function cart()
     {

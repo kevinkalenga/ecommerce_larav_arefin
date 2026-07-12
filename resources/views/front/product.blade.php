@@ -9,7 +9,7 @@
             <ol class="breadcrumb mb-0">
                 <li class="breadcrumb-item"><a href="{{route('home')}}" class="text-success">Home</a></li>
                 <li class="breadcrumb-item"><a href="{{route('products')}}" class="text-success">Products</a></li>
-                <li class="breadcrumb-item active" aria-current="page">Fresh Green Apples</li>
+                <li class="breadcrumb-item active" aria-current="page">{{$product->name}}</li>
             </ol>
         </nav>
     </div>
@@ -24,7 +24,7 @@
                 <div class="product-images">
                     <!-- Main Image -->
                     <div class="main-image mb-3">
-                        <img src="{{asset('dist-front/images/Green Apple.jpg')}}" alt="Fresh Green Apples" class="rounded shadow-sm w-100 product-single-img">
+                        <img src="{{asset('uploads/product_img/'.$product->photo)}}" alt="{{$product->name}}" class="rounded shadow-sm w-100 product-single-img">
                     </div>
                 </div>
             </div>
@@ -36,7 +36,7 @@
                     <span class="badge bg-danger mb-2">20% OFF</span>
                     
                     <!-- Product Title -->
-                    <h2 class="fw-bold mb-3">Fresh Green Apples</h2>
+                    <h2 class="fw-bold mb-3">{{$product->name}}</h2>
                     
                     <!-- Rating -->
                     <div class="d-flex align-items-center mb-3">
@@ -58,8 +58,7 @@
 
                     <!-- Short Description -->
                     <p class="text-muted mb-4">
-                        Fresh, crisp, and delicious green apples. Perfect for snacking, salads, or baking. 
-                        These apples are handpicked from organic farms and delivered fresh to your doorstep.
+                       {!! $product->short_description !!}
                     </p>
 
                     <!-- Availability -->
@@ -151,24 +150,7 @@
                     <!-- Description Tab -->
                     <div class="tab-pane fade show active" id="description">
                         <h5 class="mb-3">Product Description</h5>
-                        <p>
-                            Our Fresh Green Apples are handpicked from the finest organic orchards. These crisp and juicy apples 
-                            are perfect for healthy snacking, adding to salads, or using in your favorite recipes. Each apple is 
-                            carefully selected to ensure the highest quality and freshness.
-                        </p>
-                        <p>
-                            Green apples are known for their slightly tart flavor and firm texture. They're packed with fiber, 
-                            vitamin C, and antioxidants, making them an excellent choice for a healthy lifestyle. Store them in 
-                            a cool place or refrigerate to maintain freshness.
-                        </p>
-                        <h6 class="mt-4 mb-3">Benefits:</h6>
-                        <ul>
-                            <li>Rich in fiber and vitamin C</li>
-                            <li>Low in calories</li>
-                            <li>Supports digestive health</li>
-                            <li>Great for heart health</li>
-                            <li>100% organic and pesticide-free</li>
-                        </ul>
+                        {!! $product->short_description !!}
                     </div>
 
                     <!-- Additional Info Tab -->
@@ -286,12 +268,13 @@
                 <h3 class="fw-bold mb-4">Related Products</h3>
                 <div class="row g-4">
                     <!-- Related Product 1 -->
+                  @forelse($related_products as $related_product)
                     <div class="col-lg-3 col-md-6">
                         <div class="card product-card h-100 border-0 shadow-sm">
                             <div class="position-relative">
-                                <a href="product-single.html?id=2">
+                                <a href="{{route('product', $related_product->slug)}}">
                                     <div class="product-image bg-light d-flex align-items-center justify-content-center overflow-hidden">
-                                        <img src="{{asset('dist-front/images/Orange.jpg')}}" alt="Fresh Oranges" class="img-fluid w-100 h-100">
+                                        <img src="{{asset('uploads/product_img/'.$related_product->photo)}}" alt="{{$related_product->name}}" class="img-fluid w-100 h-100">
                                     </div>
                                 </a>
                                 <button class="btn btn-sm btn-success position-absolute bottom-0 end-0 m-2">
@@ -299,8 +282,8 @@
                                 </button>
                             </div>
                             <div class="card-body">
-                                <p class="small text-muted mb-1">Fruits</p>
-                                <h6 class="card-title"><a href="product-single.html?id=2" class="text-decoration-none text-dark">Fresh Oranges</a></h6>
+                                <p class="small text-muted mb-1">{{$related_product->product_category->name}}</p>
+                                <h6 class="card-title"><a href="{{route('product', $related_product->slug)}}" class="text-decoration-none text-dark">{{$related_product->name}}</a></h6>
                                 <div class="d-flex align-items-center mb-2">
                                     <span class="text-warning small">
                                         <i class="bi bi-star-fill"></i>
@@ -311,12 +294,20 @@
                                     </span>
                                     <small class="text-muted ms-2">(4.7)</small>
                                 </div>
-                                <span class="text-success fw-bold">$6.99</span>
+                                <div class="text-success fw-bold">
+                                     @foreach($product->product_variations as $item)
+                                            <span class="text-success fw-bold fs-5">${{$item->sale_price}}</span>
+                                            <span class="text-muted text-decoration-line-through small ms-1">${{$item->regular_price}}</span>
+                                            @break
+                                    @endforeach
+                                </div>
                             </div>
                         </div>
                     </div>
-
-                    <!-- Add more related products -->
+                   @empty
+                    <p class="text-danger">No related products found.</p>
+                   @endforelse
+                    
                 </div>
             </div>
         </div>
