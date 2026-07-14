@@ -33,7 +33,27 @@
             <div class="col-lg-7">
                 <div class="product-info">
                     <!-- Badge -->
-                    <span class="badge bg-danger mb-2">20% OFF</span>
+                    @foreach($product->product_variations as $variation)
+
+                        @if(
+                            $variation->regular_price 
+                            && $variation->sale_price 
+                            && $variation->regular_price > $variation->sale_price
+                          )
+
+                            @php
+                                $discount = (($variation->regular_price - $variation->sale_price) / $variation->regular_price) * 100;
+                            @endphp
+
+                            <span class="badge bg-danger mb-2">
+                                {{ round($discount) }}% OFF
+                            </span>
+
+                        @endif
+
+                        @break
+
+                    @endforeach
                     
                     <!-- Product Title -->
                     <h2 class="fw-bold mb-3">{{$product->name}}</h2>
@@ -52,8 +72,11 @@
 
                     <!-- Price -->
                     <div class="price-section mb-4">
-                        <h3 class="text-success fw-bold d-inline" id="currentPrice">$4.99</h3>
-                        <span class="text-muted text-decoration-line-through fs-5 ms-2" id="originalPrice">$6.99</span>
+                        @foreach($product->product_variations as $variation)
+                         <h3 class="text-success fw-bold d-inline" id="currentPrice">${{$variation->sale_price}}</h3>
+                         <span class="text-muted text-decoration-line-through fs-5 ms-2" id="originalPrice">${{$variation->regular_price}}</span>
+                         @break
+                        @endforeach
                     </div>
 
                     <!-- Short Description -->
@@ -64,7 +87,21 @@
                     <!-- Availability -->
                     <div class="mb-3">
                         <span class="fw-bold">Availability:</span> 
-                        <span class="text-success"><i class="bi bi-check-circle-fill"></i> In Stock</span>
+                         @foreach($product->product_variations as $variation)
+                            @if($variation->stock > 0)
+                                <span class="text-success"  id="stockStatus">
+                                    <i class="bi bi-check-circle-fill"></i>
+                                    In Stock
+                                </span>
+                            @else
+                                <span class="text-danger">
+                                    <i class="bi bi-x-circle-fill"></i>
+                                    Out Of Stock
+                                </span>
+                            @endif
+
+                            @break
+                        @endforeach
                     </div>
 
                     <!-- Category -->
@@ -79,14 +116,13 @@
                     <div class="mb-4">
                         <label class="fw-bold mb-2">Weight:</label>
                         <div class="btn-group" role="group">
-                            <input type="radio" class="btn-check weight-option" name="weight" id="weight1" value="1" data-price="4.99" data-original="6.99" checked>
-                            <label class="btn btn-outline-success" for="weight1">1 kg</label>
-
-                            <input type="radio" class="btn-check weight-option" name="weight" id="weight2" value="2" data-price="9.49" data-original="13.49">
-                            <label class="btn btn-outline-success" for="weight2">2 kg</label>
-
-                            <input type="radio" class="btn-check weight-option" name="weight" id="weight3" value="5" data-price="22.99" data-original="32.99">
-                            <label class="btn btn-outline-success" for="weight3">5 kg</label>
+                          @foreach($product->product_variations as $variation)
+                            <input type="radio" class="btn-check weight-option" name="weight" id="weight{{$loop->iteration}}" value="1" 
+                            data-price="{{$variation->sale_price}}" data-original="{{$variation->regular_price}}"
+                            data-stock="{{$variation->stock}}" {{$loop->first ? 'checked':''}}>
+                            <label class="btn btn-outline-success" for="weight{{$loop->iteration}}">{{$variation->label}}</label>
+                          @endforeach
+                           
                         </div>
                     </div>
 
@@ -319,12 +355,76 @@
 <script>
 $(document).ready(function() {
     console.log('Script loaded');
+
+    <?php 
+      foreach($product->product_variations as $variation){
+         $baseUnitPrice = $variation->sale_price;
+         $baseOriginalPrice = $variation->regular_price;
+         break;
+      }
+    ?>
+
+    
+    function updateStock(stock){
+
+        if(stock > 0){
+
+            $('#stockStatus').html(
+                '<span class="text-success">' +
+                '<i class="bi bi-check-circle-fill"></i> In Stock' +
+                '</span>'
+            );
+
+            $('#quantityInput').attr('max', stock);
+
+        }else{
+
+            $('#stockStatus').html(
+                '<span class="text-danger">' +
+                '<i class="bi bi-x-circle-fill"></i> Out Of Stock' +
+                '</span>'
+            );
+
+            $('#quantityInput').val(0);
+        }
+    }
+    
     
     // Store base unit prices
-    var baseUnitPrice = 4.99;
-    var baseOriginalPrice = 6.99;
+    var baseUnitPrice = <?php echo $baseUnitPrice;  ?>;
+    var baseOriginalPrice = <?php echo $baseOriginalPrice;  ?>;
     
-    // Function to update total price
+    
+    
+    var firstStock = $('input[name="weight"]:checked').data('stock');
+
+    updateStock(firstStock);
+    
+    
+    $('input[name="weight"]').on('change', function() {
+
+            console.log('Weight changed!');
+
+            baseUnitPrice = parseFloat($(this).data('price'));
+            baseOriginalPrice = parseFloat($(this).data('original'));
+
+            var stock = $(this).data('stock');
+
+            // Update stock
+            updateStock(stock);
+
+            // Reset quantity
+            $('#quantityInput').val(1);
+
+            // Update prices
+            $('#currentPrice').text('$' + baseUnitPrice.toFixed(2));
+            $('#originalPrice').text('$' + baseOriginalPrice.toFixed(2));
+
+    });
+    
+    
+    
+     // Function to update total price
     function updateTotalPrice() {
         var quantity = parseInt($('#quantityInput').val());
         var totalPrice = baseUnitPrice * quantity;
@@ -334,22 +434,7 @@ $(document).ready(function() {
         $('#originalPrice').text('$' + originalTotal.toFixed(2));
     }
     
-    // Weight option change handler
-    $('input[name="weight"]').on('change', function() {
-        console.log('Weight changed!');
-        baseUnitPrice = parseFloat($(this).data('price'));
-        baseOriginalPrice = parseFloat($(this).data('original'));
-        
-        console.log('New Price:', baseUnitPrice);
-        console.log('Original Price:', baseOriginalPrice);
-        
-        // Reset quantity to 1 when weight changes
-        $('#quantityInput').val(1);
-        
-        // Update prices
-        $('#currentPrice').text('$' + baseUnitPrice.toFixed(2));
-        $('#originalPrice').text('$' + baseOriginalPrice.toFixed(2));
-    });
+   
     
     // Quantity increment/decrement handlers
     $('#incrementBtn').on('click', function() {
@@ -376,6 +461,9 @@ $(document).ready(function() {
         }
         updateTotalPrice();
     });
+
+
+   
 });
 </script>
 

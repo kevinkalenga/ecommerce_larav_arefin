@@ -84,7 +84,13 @@
                                                 <td>{{$loop->iteration}}</td>
                                                 <td>{{$item->label}}</td>
                                                 <td>${{$item->sale_price}}</td>
-                                                <td>${{$item->regular_price}}</td>
+                                                <td>
+                                                    @if($item->regular_price) 
+                                                      
+                                                      ${{$item->regular_price}}
+
+                                                    @endif
+                                                </td>
                                                 <td>{{$item->stock}}</td>
                                                 <td>{{$item->sort_order}}</td>
                                                 <td>
