@@ -44,10 +44,20 @@ class FrontController extends Controller
     {
         return view('front.post', compact('slug'));
     }
-    public function products()
+    public function products(Request $request)
     {
-        $products = Product::get();
-        return view('front.products', compact('products'));
+        //dd($request->all());
+        $product_categories = ProductCategory::orderBy('name', 'asc')->get();
+
+        $products = Product::orderBy('id', 'asc');
+
+        if($request->category != null && $request->category != "") {
+            $products = $products->where('product_category_id', $request->category);
+        }
+        
+        $products = $products->paginate(2);
+        
+        return view('front.products', compact('products', 'product_categories'));
     }
     public function product($slug)
     {

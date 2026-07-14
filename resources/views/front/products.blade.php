@@ -22,22 +22,23 @@
         <div class="row">
             <!-- Sidebar -->
             <div class="col-lg-3 col-md-4">
+              <form action="{{url('products')}}" method="GET">  
+            
                 <div class="sidebar">
                     <!-- Categories Filter -->
                     <div class="filter-widget mb-4">
                         <h5 class="fw-bold mb-3">Categories</h5>
                         <div class="form-check mb-2">
-                            <input class="form-check-input" type="radio" name="category" id="catAll" checked>
+                            <input class="form-check-input" type="radio" name="category" id="catAll" value="" checked>
                             <label class="form-check-label" for="catAll">
                                 All Products
                             </label>
                         </div>
-                        @php
-                             $product_categories = App\Models\ProductCategory::orderBy('name', 'asc')->get();
-                        @endphp
+                      
                         @foreach( $product_categories as $item)
                            <div class="form-check mb-2">
-                            <input class="form-check-input" type="radio" name="category" id="cat{{$item->id}}">
+                            <input class="form-check-input" type="radio" name="category"
+                             id="cat{{$item->id}}" value="{{$item->id}}" {{request('category') == $item->id ? 'checked' : ''}}>
                             <label class="form-check-label" for="cat{{$item->id}}">
                                 {{$item->name}}
                             </label>
@@ -79,7 +80,7 @@
                             </label>
                         </div>
                     </div>
-
+                
                     <!-- Rating Filter -->
                     <div class="filter-widget mb-4">
                         <h5 class="fw-bold mb-3">Rating</h5>
@@ -154,10 +155,11 @@
                    
 
                     <!-- Reset Filters Button -->
-                    <button class="btn btn-outline-success w-100">
-                        <i class="bi bi-arrow-clockwise me-2"></i>Reset Filters
+                    <button type="submit" class="btn btn-outline-success w-100">
+                        <i class="bi bi-arrow-clockwise me-2"></i>Apply Filters
                     </button>
                 </div>
+              </form>
             </div>
 
             <!-- Products Grid -->
@@ -165,7 +167,7 @@
                 <!-- Toolbar -->
                 <div class="products-toolbar d-flex justify-content-between align-items-center mb-4 p-3 bg-light rounded">
                     <div>
-                        <p class="mb-0 text-muted">Showing <strong>1-12</strong> of <strong>48</strong> results</p>
+                        <p class="mb-0 text-muted">Showing {{$products->firstItem()}} to {{$products->lastItem()}} of {{$products->total()}} results</p>
                     </div>
                     <div class="d-flex align-items-center">
                         <label class="me-2 mb-0">Sort by:</label>
@@ -213,7 +215,9 @@
                                     <div>
                                         @foreach($product->product_variations as $item)
                                             <span class="text-success fw-bold fs-5">${{$item->sale_price}}</span>
-                                            <span class="text-muted text-decoration-line-through small ms-1">${{$item->regular_price}}</span>
+                                            @if($item->regular_price != null)
+                                               <span class="text-muted text-decoration-line-through small ms-1">${{$item->regular_price}}</span>
+                                            @endif
                                             @break
                                         @endforeach
                                     </div>
@@ -225,11 +229,16 @@
                  
                    @endforeach
                   
+                  
+                   <div class="col-lg-12 d-flex justify-content-center">
+                      {{$products->appends(request()->query())->links()}}
+                      
+                  </div>
                     
                 </div>
 
                 <!-- Pagination -->
-                <nav aria-label="Page navigation" class="mt-5">
+                {{--<nav aria-label="Page navigation" class="mt-5">
                     <ul class="pagination justify-content-center">
                         <li class="page-item disabled">
                             <a class="page-link" href="#" tabindex="-1">Previous</a>
@@ -242,7 +251,7 @@
                             <a class="page-link" href="#">Next</a>
                         </li>
                     </ul>
-                </nav>
+                </nav>--}}
             </div>
         </div>
     </div>
