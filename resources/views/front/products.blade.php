@@ -49,36 +49,17 @@
                     <!-- Price Filter -->
                     <div class="filter-widget mb-4">
                         <h5 class="fw-bold mb-3">Price Range</h5>
-                        <div class="form-check mb-2">
-                            <input class="form-check-input" type="radio" name="price" id="priceAll" checked>
-                            <label class="form-check-label" for="priceAll">
-                                All Prices
-                            </label>
+                        <div class="price d-flex justify-content-start mb-3 gap-1">
+                            <div class="min">
+                                <input type="number" name="min_price" class="form-control mr-2" value="{{request('min_price')}}" min="0" placeholder="Min Price">
+                            </div>
+                            <div class="max">
+                                <input type="number" name="max_price" class="form-control" value="{{request('max_price')}}" min="1" placeholder="Max Price">
+                            </div>
                         </div>
-                        <div class="form-check mb-2">
-                            <input class="form-check-input" type="radio" name="price" id="price1">
-                            <label class="form-check-label" for="price1">
-                                Under $5
-                            </label>
-                        </div>
-                        <div class="form-check mb-2">
-                            <input class="form-check-input" type="radio" name="price" id="price2">
-                            <label class="form-check-label" for="price2">
-                                $5 - $10
-                            </label>
-                        </div>
-                        <div class="form-check mb-2">
-                            <input class="form-check-input" type="radio" name="price" id="price3">
-                            <label class="form-check-label" for="price3">
-                                $10 - $20
-                            </label>
-                        </div>
-                        <div class="form-check mb-2">
-                            <input class="form-check-input" type="radio" name="price" id="price4">
-                            <label class="form-check-label" for="price4">
-                                $20 & Above
-                            </label>
-                        </div>
+                        
+                        
+                        
                     </div>
                 
                     <!-- Rating Filter -->

@@ -55,7 +55,18 @@ class FrontController extends Controller
             $products = $products->where('product_category_id', $request->category);
         }
         
-        $products = $products->paginate(2);
+        if($request->min_price !== null && $request->max_price !== null) {
+            $minPrice = $request->min_price;
+            $maxPrice = $request->max_price;
+
+            $products = $products->whereHas('product_variations', function($query) use ($minPrice, $maxPrice) {
+                $query->whereBetween('sale_price', [$minPrice, $maxPrice]);
+            });
+        }
+        
+        
+        
+        $products = $products->paginate(6);
         
         return view('front.products', compact('products', 'product_categories'));
     }
